@@ -53,25 +53,19 @@ function delete {
 	}
 
 	if(Test-Path -Path $filepath) {
-		$handleOut = C:\handle\handle.exe
-		foreach ($line in $handleOut) { 
-			if ($line -match '\S+\spid:') {
-					$exe = $line
-			} 
-			elseif ($line -match $filepath)  { 
-				$split = $exe -Split "pid: "
-				$P  =  -split $split[1]
-				Stop-Process -Id $P[0] -Confirm -PassThru
-			}
-		}			
+		$handle = handle $filepath
+		$split = $handle -Split "pid: "
+		$P  =  -split $split[1]
+		Stop-Process -Id $P[0] -Confirm -PassThru
+	}			
 
-		if ($filepath -match "\.[A-z]*$") {		
-			Remove-Item -Path $filepath
-		}
-		else { 
-			Remove-Item -Path $filepath -Recurse
-		}
-		
+	if ($filepath -match "\.[A-z]*$") {		
+		Remove-Item -Path $filepath
 	}
+	else { 
+		Remove-Item -Path $filepath -Recurse
+	}
+		
+	
 }
 
